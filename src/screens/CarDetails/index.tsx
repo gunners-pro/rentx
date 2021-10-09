@@ -25,7 +25,9 @@ import {
   Price,
   About,
   Acessories,
+  Footer,
 } from './styles';
+import { Button } from '../../components/Button';
 
 export function CarDetails() {
   const theme = useTheme();
@@ -74,6 +76,10 @@ export function CarDetails() {
           para quem gosta de acelerar.
         </About>
       </Content>
+
+      <Footer>
+        <Button title="Confirmar" />
+      </Footer>
     </Container>
   );
 }
