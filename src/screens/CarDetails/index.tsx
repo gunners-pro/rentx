@@ -1,13 +1,60 @@
 import React from 'react';
+import { StatusBar } from 'react-native';
+import { useTheme } from 'styled-components';
 import { BackButton } from '../../components/BackButton';
-import { Container, Header } from './styles';
+import { ImageSlider } from '../../components/ImageSlider';
+import {
+  Container,
+  Header,
+  Content,
+  Details,
+  Description,
+  Brand,
+  Name,
+  Rent,
+  Period,
+  Price,
+  About,
+} from './styles';
 
 export function CarDetails() {
+  const theme = useTheme();
+
   return (
     <Container>
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor={theme.colors.background_secondary}
+      />
       <Header>
         <BackButton />
       </Header>
+
+      <ImageSlider
+        imageUrl={[
+          'https://production.autoforce.com/uploads/used_model/profile_image/21174070/used_model_comprar-rs-5-pcd-sportback-1165_fcdc130f2e.png',
+        ]}
+      />
+
+      <Content>
+        <Details>
+          <Description>
+            <Brand>Lamborguini</Brand>
+            <Name>Huracan</Name>
+          </Description>
+
+          <Rent>
+            <Period>Ao dia</Period>
+            <Price>R$ 580</Price>
+          </Rent>
+        </Details>
+
+        <About>
+          Este é um automóvel desportivo. Surgiu do landário touro de lide
+          indultado na praça Real Maestranza de Sevilla. É um belíssimo carro
+          para quem gosta de acelerar.
+        </About>
+      </Content>
     </Container>
   );
 }
