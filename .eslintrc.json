@@ -27,6 +27,8 @@
     "prettier"
   ],
   "rules": {
+    "react/require-default-props": "off",
+    "import/no-extraneous-dependencies": "off",
     "prettier/prettier": "error",
     "react/react-in-jsx-scope": "off",
     "react/style-prop-object": "off",
