@@ -22,7 +22,10 @@ export function Scheduling() {
 
   return (
     <Container>
-      <StatusBar backgroundColor={theme.colors.header} />
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={theme.colors.header}
+      />
       <Header>
         <BackButton color={theme.colors.shape} />
         <Title>

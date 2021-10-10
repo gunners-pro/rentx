@@ -1,5 +1,6 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
 
 import SpeedSvg from '../../assets/speed.svg';
@@ -29,8 +30,13 @@ import {
 } from './styles';
 import { Button } from '../../components/Button';
 
+type NavigationProps = {
+  navigate: (screen: string) => void;
+};
+
 export function CarDetails() {
   const theme = useTheme();
+  const navigation = useNavigation<NavigationProps>();
 
   return (
     <Container>
@@ -78,7 +84,10 @@ export function CarDetails() {
       </Content>
 
       <Footer>
-        <Button title="Confirmar" />
+        <Button
+          title="Escolher período do aluguel"
+          onPress={() => navigation.navigate('Scheduling')}
+        />
       </Footer>
     </Container>
   );

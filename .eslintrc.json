@@ -27,6 +27,12 @@
     "prettier"
   ],
   "rules": {
+    "no-unused-vars": [
+      2,
+      {
+        "args": "none"
+      }
+    ],
     "react/require-default-props": "off",
     "import/no-extraneous-dependencies": "off",
     "prettier/prettier": "error",
