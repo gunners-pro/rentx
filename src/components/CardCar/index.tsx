@@ -24,17 +24,22 @@ interface Props extends RectButtonProps {
   thumbnail: string;
 }
 
-export function CardCar({ brand, name, rent, thumbnail, ...rest }: Props) {
+interface DataCar {
+  item: Props;
+  onPress: () => void;
+}
+
+export function CardCar({ item, onPress, ...rest }: DataCar) {
   return (
-    <Container {...rest}>
+    <Container onPress={onPress} {...rest}>
       <Details>
-        <Brand>{brand}</Brand>
-        <Name>{name}</Name>
+        <Brand>{item.brand}</Brand>
+        <Name>{item.name}</Name>
 
         <About>
           <Rent>
-            <Period>{rent.period}</Period>
-            <Price>{`R$ ${rent.price}`}</Price>
+            <Period>{item.rent.period}</Period>
+            <Price>{`R$ ${item.rent.price}`}</Price>
           </Rent>
 
           <Type>
@@ -45,7 +50,7 @@ export function CardCar({ brand, name, rent, thumbnail, ...rest }: Props) {
 
       <CarImage
         source={{
-          uri: thumbnail,
+          uri: item.thumbnail,
         }}
         resizeMode="contain"
       />

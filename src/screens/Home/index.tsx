@@ -1,28 +1,58 @@
-import React from 'react';
-import { StatusBar } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { useTheme } from 'styled-components';
 import Logo from '../../assets/logo.svg';
 import { CardCar } from '../../components/CardCar';
-import theme from '../../theme';
 import { Container, Header, TotalCars, CarList } from './styles';
+import { api } from '../../services/api';
 
 type NavigationProps = {
   navigate: (screen: string) => void;
 };
 
-export function Home() {
-  const navigation = useNavigation<NavigationProps>();
-  const carData = {
-    brand: 'Audi',
-    name: 'RS 5 Coupé',
-    rent: {
-      period: 'ao dia',
-      price: 120,
-    },
-    thumbnail:
-      'https://production.autoforce.com/uploads/used_model/profile_image/21174070/used_model_comprar-rs-5-pcd-sportback-1165_fcdc130f2e.png',
+export interface CarProps {
+  id: string;
+  brand: string;
+  name: string;
+  about: string;
+  rent: {
+    period: string;
+    price: number;
   };
+  fuel_type: string;
+  thumbnail: string;
+  accessories: Array<{
+    type: string;
+    name: string;
+  }>;
+  photos: Array<string>;
+}
+
+export function Home() {
+  const [cars, setCars] = useState<CarProps[]>([]);
+  const [loading, setLoading] = useState(true);
+  const navigation = useNavigation<NavigationProps>();
+  const theme = useTheme();
+
+  useEffect(() => {
+    async function fetchCars() {
+      try {
+        const response = await api.get('/cars');
+        setCars(response.data);
+      } catch {
+        Alert.alert(
+          'Ops',
+          'Não foi possível carregar os dados., Tente novamente mais tarde.',
+        );
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchCars();
+  }, []);
 
   return (
     <Container>
@@ -32,19 +62,27 @@ export function Home() {
       />
       <Header>
         <Logo width={RFValue(108)} height={RFValue(12)} />
-        <TotalCars>Total de 12 carros</TotalCars>
+        <TotalCars>Total de {cars.length} carros</TotalCars>
       </Header>
 
-      <CarList
-        data={[1, 2, 3, 4, 5, 6, 7]}
-        keyExtractor={item => String(item)}
-        renderItem={() => (
-          <CardCar
-            {...carData}
-            onPress={() => navigation.navigate('CarDetails')}
-          />
-        )}
-      />
+      {loading ? (
+        <ActivityIndicator
+          color={theme.colors.main}
+          size="large"
+          style={{ flex: 1 }}
+        />
+      ) : (
+        <CarList
+          data={cars}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <CardCar
+              item={item}
+              onPress={() => navigation.navigate('CarDetails')}
+            />
+          )}
+        />
+      )}
     </Container>
   );
 }
