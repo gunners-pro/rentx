@@ -5,55 +5,41 @@ import {
 } from 'react-native-calendars';
 import { Feather } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
+import { ptBR } from './localeConfig';
 
-LocaleConfig.locales['pt-br'] = {
-  monthNames: [
-    'Janeiro',
-    'Fevereiro',
-    'Março',
-    'Abril',
-    'Maio',
-    'Junho',
-    'Julho',
-    'Agosto',
-    'Setembro',
-    'Outubro',
-    'Novembro',
-    'Dezembro',
-  ],
-  monthNamesShort: [
-    'Jan',
-    'Fev',
-    'Mar',
-    'Abr',
-    'Mai',
-    'Jun',
-    'Jul',
-    'Ago',
-    'Set',
-    'Out',
-    'Nov',
-    'Dez',
-  ],
-  dayNames: [
-    'Domingo',
-    'Segunda',
-    'Terça',
-    'Quarta',
-    'Quinta',
-    'Sexta',
-    'Sábado',
-  ],
-  dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-  today: 'Hoje',
-};
+LocaleConfig.locales['pt-br'] = ptBR;
 
 LocaleConfig.defaultLocale = 'pt-br';
 
-export function Calendar() {
+export interface MarkedDateProps {
+  [date: string]: {
+    color: string;
+    textColor: string;
+    disabled?: boolean;
+    disableTouchEvent?: boolean;
+  };
+}
+
+export interface DayProps {
+  year: number;
+  month: number;
+  day: number;
+  timestamp: number;
+  dateString: string;
+}
+
+interface CalendarProps {
+  markedDates: MarkedDateProps;
+  onDayPress: (data: DayProps) => void;
+}
+
+export function Calendar({ markedDates, onDayPress }: CalendarProps) {
   const theme = useTheme();
   return (
     <CustomCalendar
+      onDayPress={onDayPress}
+      markingType="period"
+      markedDates={markedDates}
       renderArrow={direction => (
         <Feather
           name={direction === 'left' ? 'chevron-left' : 'chevron-right'}

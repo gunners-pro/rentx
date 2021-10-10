@@ -27,6 +27,7 @@
     "prettier"
   ],
   "rules": {
+    "react/jsx-no-bind": "off",
     "no-unused-vars": [
       2,
       {

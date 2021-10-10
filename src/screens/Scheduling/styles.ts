@@ -15,7 +15,7 @@ export const Header = styled.View`
   height: 300px;
   background-color: ${({ theme }) => theme.colors.header};
   justify-content: center;
-  padding: 25px;
+  padding: 24px;
 `;
 
 export const Title = styled.Text`
