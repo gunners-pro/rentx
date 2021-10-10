@@ -1,14 +1,14 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
 
 import SpeedSvg from '../../assets/speed.svg';
-import AccelerationSvg from '../../assets/acceleration.svg';
-import ForceSvg from '../../assets/force.svg';
-import GasolineSvg from '../../assets/gasoline.svg';
-import ExchangeSvg from '../../assets/exchange.svg';
-import PeopleSvg from '../../assets/people.svg';
+// import AccelerationSvg from '../../assets/acceleration.svg';
+// import ForceSvg from '../../assets/force.svg';
+// import GasolineSvg from '../../assets/gasoline.svg';
+// import ExchangeSvg from '../../assets/exchange.svg';
+// import PeopleSvg from '../../assets/people.svg';
 
 import { Accessory } from '../../components/Accessory';
 import { BackButton } from '../../components/BackButton';
@@ -25,10 +25,11 @@ import {
   Period,
   Price,
   About,
-  Acessories,
+  Accessories,
   Footer,
 } from './styles';
 import { Button } from '../../components/Button';
+import { CarProps } from '../Home';
 
 type NavigationProps = {
   navigate: (screen: string) => void;
@@ -37,6 +38,8 @@ type NavigationProps = {
 export function CarDetails() {
   const theme = useTheme();
   const navigation = useNavigation<NavigationProps>();
+  const route = useRoute();
+  const car = route.params as CarProps;
 
   return (
     <Container>
@@ -45,42 +48,40 @@ export function CarDetails() {
         backgroundColor={theme.colors.background_secondary}
       />
       <Header>
-        <BackButton />
+        <BackButton onPress={() => navigation.navigate('Home')} />
       </Header>
 
-      <ImageSlider
-        imageUrl={[
-          'https://production.autoforce.com/uploads/used_model/profile_image/21174070/used_model_comprar-rs-5-pcd-sportback-1165_fcdc130f2e.png',
-        ]}
-      />
+      <ImageSlider imageUrl={car.photos} />
 
       <Content>
         <Details>
           <Description>
-            <Brand>Lamborguini</Brand>
-            <Name>Huracan</Name>
+            <Brand>{car.brand}</Brand>
+            <Name>{car.name}</Name>
           </Description>
 
           <Rent>
-            <Period>Ao dia</Period>
-            <Price>R$ 580</Price>
+            <Period>{car.rent.period}</Period>
+            <Price>R$ {car.rent.price}</Price>
           </Rent>
         </Details>
 
-        <Acessories>
-          <Accessory name="380Km/h" icon={SpeedSvg} />
-          <Accessory name="3.2s" icon={AccelerationSvg} />
+        <Accessories>
+          {car.accessories.map(accessory => (
+            <Accessory
+              key={accessory.type}
+              name={accessory.name}
+              icon={SpeedSvg}
+            />
+          ))}
+          {/* <Accessory name="3.2s" icon={AccelerationSvg} />
           <Accessory name="800 HP" icon={ForceSvg} />
           <Accessory name="Gasolina" icon={GasolineSvg} />
           <Accessory name="Auto" icon={ExchangeSvg} />
-          <Accessory name="2 pessoas" icon={PeopleSvg} />
-        </Acessories>
+          <Accessory name="2 pessoas" icon={PeopleSvg} /> */}
+        </Accessories>
 
-        <About>
-          Este é um automóvel desportivo. Surgiu do landário touro de lide
-          indultado na praça Real Maestranza de Sevilla. É um belíssimo carro
-          para quem gosta de acelerar.
-        </About>
+        <About>{car.about} </About>
       </Content>
 
       <Footer>

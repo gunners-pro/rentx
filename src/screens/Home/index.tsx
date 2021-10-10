@@ -9,7 +9,7 @@ import { Container, Header, TotalCars, CarList } from './styles';
 import { api } from '../../services/api';
 
 type NavigationProps = {
-  navigate: (screen: string) => void;
+  navigate: (screen: string, data: CarProps) => void;
 };
 
 export interface CarProps {
@@ -78,7 +78,7 @@ export function Home() {
           renderItem={({ item }) => (
             <CardCar
               item={item}
-              onPress={() => navigation.navigate('CarDetails')}
+              onPress={() => navigation.navigate('CarDetails', item)}
             />
           )}
         />
