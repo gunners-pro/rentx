@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, StatusBar } from 'react-native';
+import { Alert, StatusBar, BackHandler } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -14,6 +14,7 @@ import {
   MyScheduleFloatButton,
 } from './styles';
 import { api } from '../../services/api';
+import { LoadAnimation } from '../../components/LoadAnimation';
 
 type NavigationProps = {
   navigate: (screen: string, data?: CarProps) => void;
@@ -61,6 +62,10 @@ export function Home() {
     fetchCars();
   }, []);
 
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => true);
+  }, []);
+
   return (
     <Container>
       <StatusBar
@@ -73,11 +78,7 @@ export function Home() {
       </Header>
 
       {loading ? (
-        <ActivityIndicator
-          color={theme.colors.main}
-          size="large"
-          style={{ flex: 1 }}
-        />
+        <LoadAnimation />
       ) : (
         <CarList
           data={cars}

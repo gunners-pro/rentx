@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar, Alert, FlatList, ActivityIndicator } from 'react-native';
+import { StatusBar, Alert, FlatList } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
@@ -22,6 +22,7 @@ import {
   CarFooterDate,
 } from './styles';
 import { CardCar } from '../../components/CardCar';
+import { LoadAnimation } from '../../components/LoadAnimation';
 
 interface ICarProps {
   id: string;
@@ -72,11 +73,7 @@ export default function MySchedules() {
         </Header>
 
         {loading ? (
-          <ActivityIndicator
-            size="large"
-            color={theme.colors.main}
-            style={{ flex: 1 }}
-          />
+          <LoadAnimation />
         ) : (
           <Content>
             <Appointments>

@@ -15,14 +15,6 @@ export const Header = styled.View`
   margin-left: 24px;
 `;
 
-export const Content = styled.ScrollView.attrs({
-  contentContainerStyle: {
-    padding: 24,
-    alignItems: 'center',
-  },
-  showsVerticalScrollIndicator: false,
-})``;
-
 export const Details = styled.View`
   width: 100%;
   flex-direction: row;
