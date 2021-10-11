@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, StatusBar, BackHandler } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import {
+  Alert,
+  StatusBar,
+  BackHandler,
+  FlatList,
+  FlatListProps,
+  LayoutAnimation,
+} from 'react-native';
+import Animated from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useTheme } from 'styled-components';
 import Logo from '../../assets/logo.svg';
 import { CardCar } from '../../components/CardCar';
-import {
-  Container,
-  Header,
-  TotalCars,
-  CarList,
-  MyScheduleFloatButton,
-} from './styles';
+import { Container, Header, TotalCars, MyScheduleFloatButton } from './styles';
 import { api } from '../../services/api';
 import { LoadAnimation } from '../../components/LoadAnimation';
 
@@ -43,6 +45,11 @@ export function Home() {
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation<NavigationProps>();
   const theme = useTheme();
+
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  const CustomFlatlist =
+    Animated.createAnimatedComponent<FlatListProps<CarProps>>(FlatList);
 
   useEffect(() => {
     async function fetchCars() {
@@ -80,15 +87,51 @@ export function Home() {
       {loading ? (
         <LoadAnimation />
       ) : (
-        <CarList
-          data={cars}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <CardCar
-              item={item}
-              onPress={() => navigation.navigate('CarDetails', item)}
-            />
+        <CustomFlatlist
+          contentContainerStyle={{
+            padding: 24,
+          }}
+          showsVerticalScrollIndicator={false}
+          scrollEventThrottle={16}
+          onScroll={Animated.event(
+            [
+              {
+                nativeEvent: { contentOffset: { y: scrollY } },
+              },
+            ],
+            { useNativeDriver: true },
           )}
+          data={cars}
+          renderItem={({ item, index }) => {
+            const inputRange = [-1, 0, 126 * index, 126 * (index + 2)];
+            const opacityInputRange = [-1, 0, 126 * index, 126 * (index + 0.7)];
+            LayoutAnimation.linear();
+
+            const styleScale = scrollY.interpolate({
+              inputRange,
+              outputRange: [1, 1, 1, 0],
+            });
+
+            const styleOpacity = scrollY.interpolate({
+              inputRange: opacityInputRange,
+              outputRange: [1, 1, 1, 0],
+            });
+
+            return (
+              <Animated.View
+                key={item.id}
+                style={{
+                  transform: [{ scale: styleScale }],
+                  opacity: styleOpacity,
+                }}
+              >
+                <CardCar
+                  item={item}
+                  onPress={() => navigation.navigate('CarDetails', item)}
+                />
+              </Animated.View>
+            );
+          }}
         />
       )}
 
