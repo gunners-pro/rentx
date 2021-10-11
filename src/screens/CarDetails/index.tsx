@@ -25,7 +25,7 @@ import { CarProps } from '../Home';
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
 
 type NavigationProps = {
-  navigate: (screen: string) => void;
+  navigate: (screen: string, car?: CarProps) => void;
 };
 
 export function CarDetails() {
@@ -75,7 +75,7 @@ export function CarDetails() {
       <Footer>
         <Button
           title="Escolher período do aluguel"
-          onPress={() => navigation.navigate('Scheduling')}
+          onPress={() => navigation.navigate('Scheduling', car)}
         />
       </Footer>
     </Container>
