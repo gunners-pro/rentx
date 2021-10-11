@@ -1,4 +1,5 @@
 import { FlatList } from 'react-native';
+import { RectButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
 import { CarProps } from '.';
@@ -30,3 +31,15 @@ export const CarList = styled(FlatList as new () => FlatList<CarProps>).attrs({
   },
   showsVerticalScrollIndicator: false,
 })``;
+
+export const MyScheduleFloatButton = styled(RectButton)`
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: ${({ theme }) => theme.colors.main};
+`;

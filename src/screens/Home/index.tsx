@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, StatusBar } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useTheme } from 'styled-components';
 import Logo from '../../assets/logo.svg';
 import { CardCar } from '../../components/CardCar';
-import { Container, Header, TotalCars, CarList } from './styles';
+import {
+  Container,
+  Header,
+  TotalCars,
+  CarList,
+  MyScheduleFloatButton,
+} from './styles';
 import { api } from '../../services/api';
 
 type NavigationProps = {
-  navigate: (screen: string, data: CarProps) => void;
+  navigate: (screen: string, data?: CarProps) => void;
 };
 
 export interface CarProps {
@@ -83,6 +90,10 @@ export function Home() {
           )}
         />
       )}
+
+      <MyScheduleFloatButton onPress={() => navigation.navigate('MySchedules')}>
+        <Ionicons name="ios-car-sport" size={32} color={theme.colors.shape} />
+      </MyScheduleFloatButton>
     </Container>
   );
 }
