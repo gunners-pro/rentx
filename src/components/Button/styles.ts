@@ -13,6 +13,7 @@ interface TitleProps {
 export const Container = styled(RectButton)<ContainerProps>`
   width: 100%;
   padding: 19px;
+  margin-bottom: 8px;
   align-items: center;
   justify-content: center;
   background-color: ${({ color, theme }) => color || theme.colors.main};
