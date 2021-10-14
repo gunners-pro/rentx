@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import * as yup from 'yup';
+import { useNavigation } from '@react-navigation/native';
 import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
@@ -12,10 +13,15 @@ import { Input } from '../../components/Input';
 import { InputPassword } from '../../components/InputPassword';
 import { Container, Header, Title, SubTitle, Form, Footer } from './styles';
 
+type NavigationProps = {
+  navigate: (screen: string) => void;
+};
+
 export default function SignIn() {
   const theme = useTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigation = useNavigation<NavigationProps>();
 
   async function handleSignIn() {
     try {
@@ -75,7 +81,7 @@ export default function SignIn() {
             <Button
               title="Criar conta gratuita"
               light
-              onPress={() => {}}
+              onPress={() => navigation.navigate('SignUpFirstStep')}
               color={theme.colors.background_secondary}
             />
           </Footer>
