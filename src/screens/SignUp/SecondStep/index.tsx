@@ -20,6 +20,7 @@ import {
 import { Bullet } from '../../../components/Bullet';
 import { Button } from '../../../components/Button';
 import { InputPassword } from '../../../components/InputPassword';
+import { api } from '../../../services/api';
 
 type NavigationProps = {
   goBack: () => void;
@@ -30,7 +31,7 @@ interface Params {
   user: {
     name: string;
     email: string;
-    driveLicense: string;
+    driverLicense: string;
   };
 }
 
@@ -42,7 +43,7 @@ export default function SignUpSecondStep() {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
 
-  function handleRegister() {
+  async function handleRegister() {
     if (!password || !passwordConfirm) {
       return Alert.alert('Alerta', 'Informe a senha e confirme');
     }
@@ -50,12 +51,23 @@ export default function SignUpSecondStep() {
       return Alert.alert('Alerta', 'As senhas não são iguais');
     }
 
-    // enviar para API
-    navigation.navigate('Confirmation', {
-      nextScreenRoute: 'SignIn',
-      title: 'Conta Criada !',
-      message: `Agora é só fazer login\n e aproveitar.`,
-    });
+    await api
+      .post('/users', {
+        name: user.name,
+        email: user.email,
+        password,
+        driver_license: user.driverLicense,
+      })
+      .then(() => {
+        navigation.navigate('Confirmation', {
+          nextScreenRoute: 'SignIn',
+          title: 'Conta Criada !',
+          message: `Agora é só fazer login\n e aproveitar.`,
+        });
+      })
+      .catch(error => {
+        Alert.alert('Opa', 'Não foi possível cadastrar');
+      });
   }
 
   return (
