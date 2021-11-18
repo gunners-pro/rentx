@@ -30,7 +30,7 @@
     "consistent-return":"off",
     "react/jsx-no-bind": "off",
     "no-unused-vars": [
-      2,
+      1,
       {
         "args": "none"
       }

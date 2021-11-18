@@ -12,6 +12,7 @@ import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { InputPassword } from '../../components/InputPassword';
 import { Container, Header, Title, SubTitle, Form, Footer } from './styles';
+import { useAuth } from '../../hooks/auth';
 
 type NavigationProps = {
   navigate: (screen: string) => void;
@@ -22,6 +23,7 @@ export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation<NavigationProps>();
+  const { signIn } = useAuth();
 
   async function handleSignIn() {
     try {
@@ -34,6 +36,8 @@ export default function SignIn() {
       });
 
       await schema.validate({ email, password });
+
+      signIn({ email, password });
     } catch (error) {
       if (error instanceof yup.ValidationError) {
         Alert.alert('Opa', error.message);
