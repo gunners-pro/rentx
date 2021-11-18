@@ -18,10 +18,8 @@ interface Props extends RectButtonProps {
   brand: string;
   name: string;
   fuel_type: string;
-  rent: {
-    period: string;
-    price: number;
-  };
+  period: string;
+  price: number;
   thumbnail: string;
 }
 
@@ -41,8 +39,8 @@ export function CardCar({ item, onPress, ...rest }: DataCar) {
 
         <About>
           <Rent>
-            <Period>{item.rent.period}</Period>
-            <Price>{`R$ ${item.rent.price}`}</Price>
+            <Period>{item.period}</Period>
+            <Price>{`R$ ${item.price}`}</Price>
           </Rent>
 
           <Type>
