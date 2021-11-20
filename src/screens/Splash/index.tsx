@@ -51,7 +51,7 @@ export default function Splash() {
 
   useEffect(() => {
     function startApp() {
-      navigation.navigate('Home');
+      navigation.navigate('SignIn');
     }
 
     splashAnimation.value = withTiming(50, { duration: 2000 }, () => {
