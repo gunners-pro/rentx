@@ -1,4 +1,3 @@
-import { RectButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
 
@@ -21,16 +20,4 @@ export const TotalCars = styled.Text`
   font-size: ${RFValue(15)}px;
   font-family: ${({ theme }) => theme.fonts.primary_400};
   color: ${({ theme }) => theme.colors.text};
-`;
-
-export const MyScheduleFloatButton = styled(RectButton)`
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background-color: ${({ theme }) => theme.colors.main};
 `;

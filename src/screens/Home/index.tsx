@@ -8,13 +8,12 @@ import {
   LayoutAnimation,
 } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useTheme } from 'styled-components';
 import Logo from '../../assets/logo.svg';
 import { CardCar } from '../../components/CardCar';
-import { Container, Header, TotalCars, MyScheduleFloatButton } from './styles';
+import { Container, Header, TotalCars } from './styles';
 import { api } from '../../services/api';
 import { LoadAnimation } from '../../components/LoadAnimation';
 
@@ -136,10 +135,6 @@ export function Home() {
           }}
         />
       )}
-
-      <MyScheduleFloatButton onPress={() => navigation.navigate('MySchedules')}>
-        <Ionicons name="ios-car-sport" size={32} color={theme.colors.shape} />
-      </MyScheduleFloatButton>
     </Container>
   );
 }
