@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/core';
 import { Feather } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
 import { BackButton } from '../../components/BackButton';
-
 import {
   Container,
   Header,
@@ -13,11 +12,16 @@ import {
   PhotoContainer,
   Photo,
   PhotoButton,
+  Content,
+  Options,
+  Option,
+  OptionTitle,
 } from './styles';
 
 export function Profile() {
   const theme = useTheme();
   const navigation = useNavigation();
+  const [option, setOption] = useState<'dataEdit' | 'passwordEdit'>('dataEdit');
 
   function handleSignOut() {}
 
@@ -41,6 +45,25 @@ export function Profile() {
           </PhotoButton>
         </PhotoContainer>
       </Header>
+
+      <Content>
+        <Options>
+          <Option
+            active={option === 'dataEdit'}
+            onPress={() => setOption('dataEdit')}
+          >
+            <OptionTitle active={option === 'dataEdit'}>Dados</OptionTitle>
+          </Option>
+          <Option active={option === 'passwordEdit'}>
+            <OptionTitle
+              active={option === 'passwordEdit'}
+              onPress={() => setOption('passwordEdit')}
+            >
+              Trocar senha
+            </OptionTitle>
+          </Option>
+        </Options>
+      </Content>
     </Container>
   );
 }
