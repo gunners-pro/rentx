@@ -35,15 +35,13 @@ import ProfileImg from '../../assets/images/profile.png';
 const avatarProfile = Image.resolveAssetSource(ProfileImg).uri;
 
 export function Profile() {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const theme = useTheme();
   const navigation = useNavigation();
   const [option, setOption] = useState<'dataEdit' | 'passwordEdit'>('dataEdit');
   const [avatar, setAvatar] = useState(user.avatar);
   const [name, setName] = useState(user.name);
   const [driverLicense, setDriverLicense] = useState(user.driver_license);
-
-  function handleSignOut() {}
 
   async function handleSelectAvatar() {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -73,14 +71,12 @@ export function Profile() {
                 onPress={() => navigation.goBack()}
               />
               <HeaderTitle>Editar perfil</HeaderTitle>
-              <LogoutButton onPress={handleSignOut}>
+              <LogoutButton onPress={signOut}>
                 <Feather name="power" size={24} color={theme.colors.shape} />
               </LogoutButton>
             </HeaderTop>
             <PhotoContainer>
-              <Photo
-                source={{ uri: avatar.length !== 0 ? avatar : avatarProfile }}
-              />
+              <Photo source={{ uri: avatar || avatarProfile }} />
               <PhotoButton onPress={handleSelectAvatar}>
                 <Feather name="camera" size={24} color={theme.colors.shape} />
               </PhotoButton>
