@@ -5,7 +5,9 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  Image,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { Feather } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
 import { BackButton } from '../../components/BackButton';
@@ -28,13 +30,37 @@ import { Input } from '../../components/Input';
 import { InputPassword } from '../../components/InputPassword';
 import { useAuth } from '../../hooks/auth';
 
+import ProfileImg from '../../assets/images/profile.png';
+
+const avatarProfile = Image.resolveAssetSource(ProfileImg).uri;
+
 export function Profile() {
+  const { user } = useAuth();
   const theme = useTheme();
   const navigation = useNavigation();
   const [option, setOption] = useState<'dataEdit' | 'passwordEdit'>('dataEdit');
-  const { user } = useAuth();
+  const [avatar, setAvatar] = useState(user.avatar);
+  const [name, setName] = useState(user.name);
+  const [driverLicense, setDriverLicense] = useState(user.driver_license);
 
   function handleSignOut() {}
+
+  async function handleSelectAvatar() {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 1,
+    });
+
+    if (result.cancelled) {
+      return;
+    }
+
+    if (!result.cancelled) {
+      setAvatar(result.uri);
+    }
+  }
 
   return (
     <KeyboardAvoidingView behavior="position" enabled>
@@ -52,8 +78,10 @@ export function Profile() {
               </LogoutButton>
             </HeaderTop>
             <PhotoContainer>
-              <Photo source={{ uri: 'https://github.com/gunners-pro.png' }} />
-              <PhotoButton onPress={() => {}}>
+              <Photo
+                source={{ uri: avatar.length !== 0 ? avatar : avatarProfile }}
+              />
+              <PhotoButton onPress={handleSelectAvatar}>
                 <Feather name="camera" size={24} color={theme.colors.shape} />
               </PhotoButton>
             </PhotoContainer>
@@ -85,6 +113,7 @@ export function Profile() {
                   autoCapitalize="none"
                   autoCorrect={false}
                   defaultValue={user.name}
+                  onChangeText={setName}
                 />
                 <Input
                   iconName="mail"
@@ -97,6 +126,7 @@ export function Profile() {
                   placeholder="CNH"
                   keyboardType="numeric"
                   defaultValue={user.driver_license}
+                  onChangeText={setDriverLicense}
                 />
               </Section>
             ) : (
