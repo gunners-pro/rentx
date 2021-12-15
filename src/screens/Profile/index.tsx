@@ -6,9 +6,11 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Image,
+  Alert,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Feather } from '@expo/vector-icons';
+import * as yup from 'yup';
 import { useTheme } from 'styled-components';
 import { BackButton } from '../../components/BackButton';
 import {
@@ -31,11 +33,12 @@ import { InputPassword } from '../../components/InputPassword';
 import { useAuth } from '../../hooks/auth';
 
 import ProfileImg from '../../assets/images/profile.png';
+import { Button } from '../../components/Button';
 
 const avatarProfile = Image.resolveAssetSource(ProfileImg).uri;
 
 export function Profile() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, updateUser } = useAuth();
   const theme = useTheme();
   const navigation = useNavigation();
   const [option, setOption] = useState<'dataEdit' | 'passwordEdit'>('dataEdit');
@@ -57,6 +60,36 @@ export function Profile() {
 
     if (!result.cancelled) {
       setAvatar(result.uri);
+    }
+  }
+
+  async function handleUpdateUser() {
+    try {
+      const schema = yup.object().shape({
+        driverLicense: yup.string().required('CNH é obrigatória'),
+        name: yup.string().required('Nome é obrigatório'),
+      });
+
+      const data = { name, driverLicense };
+      await schema.validate(data);
+
+      await updateUser({
+        id: user.id,
+        user_id: user.user_id,
+        email: user.email,
+        name,
+        driver_license: driverLicense,
+        avatar,
+        token: user.token,
+      });
+
+      Alert.alert('Uau', 'Perfil atualizado');
+    } catch (error) {
+      if (error instanceof yup.ValidationError) {
+        Alert.alert('Ops', error.message);
+      } else {
+        Alert.alert('Ops', 'Não foi possivel atualizar os dados');
+      }
     }
   }
 
@@ -147,6 +180,8 @@ export function Profile() {
                 />
               </Section>
             )}
+
+            <Button title="Salvar alterações" onPress={handleUpdateUser} />
           </Content>
         </Container>
       </TouchableWithoutFeedback>
