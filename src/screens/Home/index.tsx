@@ -6,13 +6,13 @@ import {
   FlatList,
   FlatListProps,
   LayoutAnimation,
-  Button,
 } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useTheme } from 'styled-components';
 import { synchronize } from '@nozbe/watermelondb/sync';
+import { useNetInfo } from '@react-native-community/netinfo';
 import Logo from '../../assets/logo.svg';
 import { CardCar } from '../../components/CardCar';
 import { Container, Header, TotalCars } from './styles';
@@ -50,7 +50,7 @@ export function Home() {
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation<NavigationProps>();
   const theme = useTheme();
-
+  const netInfo = useNetInfo();
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const CustomFlatlist =
@@ -89,6 +89,12 @@ export function Home() {
     BackHandler.addEventListener('hardwareBackPress', () => true);
   }, []);
 
+  useEffect(() => {
+    if (netInfo.isConnected === true) {
+      offlineSynchronize();
+    }
+  }, [netInfo.isConnected]);
+
   async function offlineSynchronize() {
     await synchronize({
       database,
@@ -118,8 +124,6 @@ export function Home() {
         <Logo width={RFValue(108)} height={RFValue(12)} />
         <TotalCars>Total de {cars.length} carros</TotalCars>
       </Header>
-
-      <Button title="Sincronizar" onPress={offlineSynchronize} />
 
       {loading ? (
         <LoadAnimation />

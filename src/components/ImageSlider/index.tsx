@@ -3,11 +3,13 @@ import { FlatList, ViewToken } from 'react-native';
 import { Bullet } from '../Bullet';
 import { Container, ImageIndexes, CarImageWrapper, CarImage } from './styles';
 
+interface ItemProps {
+  id: string;
+  photo: string;
+}
+
 interface Props {
-  imageUrl: Array<{
-    id: string;
-    photo: string;
-  }>;
+  imageUrl: Array<ItemProps>;
 }
 
 interface ChangeImageProps {
