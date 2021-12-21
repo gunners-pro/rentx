@@ -54,14 +54,11 @@ type NavigationProps = {
   navigate: (screen: string, data: object) => void;
 };
 
-type ResponseApi = {
-  unavailable_dates: Array<string>;
-};
-
 export function SchedulingDetails() {
   const [rentalPeriod, setRentalPeriod] = useState<RentalPeriodProps>(
     {} as RentalPeriodProps,
   );
+  const [, setLoading] = useState(false);
   const theme = useTheme();
   const navigation = useNavigation<NavigationProps>();
   const route = useRoute();
@@ -70,29 +67,15 @@ export function SchedulingDetails() {
   const rentTotal = Number(dates.length * car.price);
 
   async function handleConfirmRental() {
-    const schedulesByCar = await api.get<ResponseApi>(
-      `/schedules_bycars/${car.id}`,
-    );
+    setLoading(true);
 
-    const unavailable_dates = [
-      ...schedulesByCar.data.unavailable_dates,
-      ...dates,
-    ];
-
-    await api.post('schedules_byuser', {
-      user_id: 1,
-      car,
-      startDate: format(getPlatformDate(new Date(dates[0])), 'dd/MM/yyyy'),
-      endDate: format(
-        getPlatformDate(new Date(dates[dates.length - 1])),
-        'dd/MM/yyyy',
-      ),
-    });
-
-    api
-      .put(`/schedules_bycars/${car.id}`, {
-        id: car.id,
-        unavailable_dates,
+    await api
+      .post('rentals', {
+        user_id: 1,
+        car_id: car.id,
+        start_date: new Date(dates[0]),
+        end_date: new Date(dates[dates.length - 1]),
+        total: rentTotal,
       })
       .then(() => {
         navigation.navigate('Confirmation', {
@@ -101,9 +84,10 @@ export function SchedulingDetails() {
           message: `Agora você só precisa ir\naté a concessionária da RENTX\npegar o seu automóvel.`,
         });
       })
-      .catch(() =>
-        Alert.alert('Alerta', 'Não foi possível confirmar o agendamento'),
-      );
+      .catch(() => {
+        setLoading(false);
+        Alert.alert('Alerta', 'Não foi possível confirmar o agendamento');
+      });
   }
 
   useEffect(() => {

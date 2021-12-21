@@ -22,7 +22,7 @@ import { database } from '../../database';
 import { Car as ModelCar } from '../../database/model/Car';
 
 type NavigationProps = {
-  navigate: (screen: string, data?: CarProps) => void;
+  navigate: (screen: string, data?: ModelCar) => void;
 };
 
 export interface CarProps {
@@ -103,13 +103,15 @@ export function Home() {
           `cars/sync/pull?lastPulledVersion=${lastPulledAt || 0}`,
         );
 
-        const { changes, latestVersion } = response.data;
+        const { changes, latestVersion } = await response.data;
 
         return { changes, timestamp: latestVersion };
       },
       pushChanges: async ({ changes }) => {
         const user = changes.users;
-        await api.post('/users/sync', user);
+        if (user.updated.length > 0) {
+          await api.post('/users/sync', user);
+        }
       },
     });
   }
