@@ -37,7 +37,12 @@ Nessa aplicação foram utilizados as seguintes tecnologias abaixo:
 
 ## Iniciando
 
-Primeiro faça o clone do repositório: <br> `git clone {url do repositório}`
+
+Primeiro faça o clone do repositório: <br> `git clone https://github.com/gunners-pro/rentx-api-ignite`<br />
+Em seguida faça um passo a passo para fazer funcionar.
+A API descrita acima precisa estar em execução para funcionar o App mobile
+
+Agora faça o clone do repositório desse app mobile rentx: <br> `git clone {url do repositório}`
 <br><br> Logo após baixe as dependências: <br> `yarn install` ou `npm install`
 <br><br> Agora inicie o projeto(tenha o expo instalado na sua máquina): <br>
 `yarn start` ou `npm run start`<br> e então `yarn android` ou `npm run android` para instalar o app
