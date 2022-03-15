@@ -37,7 +37,7 @@ export default function SignIn() {
 
       await schema.validate({ email, password });
 
-      signIn({ email, password });
+      await signIn({ email, password });
     } catch (error) {
       if (error instanceof yup.ValidationError) {
         Alert.alert('Opa', error.message);

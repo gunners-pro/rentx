@@ -113,6 +113,8 @@ function AuthProvider({ children }: AuthProviderProps) {
         api.defaults.headers.authorization = `Bearer ${userData.token}`;
         setData(userData);
         setLoading(false);
+      } else {
+        setLoading(false);
       }
     }
 
